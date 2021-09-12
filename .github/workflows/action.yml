@@ -1,0 +1,46 @@
+name: Bump PyPi Version If Unchanged
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  bump-version:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        # This is a Personal Acess Token for your github account can be created from the link below
+        # https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token
+        token: ${{ secrets.PAT }} # This is a Personal Acess Token from
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Setup Git
+      run: |
+        git config user.name "Benedict-Carling"
+        git config user.email 'Benedict-Carling@users.noreply.github.com'
+        git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/Benedict-Carling/spanish-conjugator
+        git checkout master
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install bump2version setuptools wheel twine
+    - name: Bump Patch Version
+      env:
+        COMMIT_MSG: ${{ github.event.head_commit.message }}
+      run: |
+        bump2version --current-version $(python setup.py --version ) patch setup.py
+
+    - name: Commit version change to master - Push
+      # Skip CI tag is import below otherwise it would trigger continous version bumps
+      run: |
+        git commit -am "[skip ci]Automated version bump" 
+        git push
