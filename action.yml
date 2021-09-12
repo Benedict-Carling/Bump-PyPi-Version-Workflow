@@ -1,6 +1,6 @@
 name: Bump PyPi Version
 
-description: Bumps the patch number of a PyPi package and commits the change back to the main branch. An example use case is running this before a PyPi publish.
+description: Bumps the patch number of a PyPi package and commits the change back to the main branch.
 
 on:
   push:
