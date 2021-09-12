@@ -2,6 +2,8 @@ name: Bump PyPi Version
 
 description: Bumps the patch number of a PyPi package and commits the change back to the main branch.
 
+icon: arrow-right
+
 on:
   push:
     branches:
